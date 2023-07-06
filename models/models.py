@@ -3,14 +3,13 @@
 from odoo import models, fields, api
 
 
-class master_details(models.Model):
-    _name = 'master_details.master_details'
-    _description = 'master_details.master_details'
+class MasterDetails(models.Model):
+    _name = 'masterdetails.masterdetails'
+    _description = 'Master Details'
 
-    name = fields.Char()
-    value = fields.Integer()
-    value2 = fields.Float(compute="_value_pc", store=True)
-    description = fields.Text()
+    name = fields.Char(string='Name')
+    value = fields.Integer(string='Value')
+    value2 = fields.Float(string='Value 2')
 
     @api.depends('value')
     def _value_pc(self):

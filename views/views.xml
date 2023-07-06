@@ -1,10 +1,10 @@
 <odoo>
   <data>
-    <!-- explicit list view definition -->
 
-    <record model="ir.ui.view" id="master_details.list">
-      <field name="name">master_details list</field>
-      <field name="model">master_details.master_details</field>
+    <!-- Определение представления списка -->
+    <record model="ir.ui.view" id="view_masterdetails_tree">
+      <field name="name">MasterDetails Tree View</field>
+      <field name="model">masterdetails.masterdetails</field>
       <field name="arch" type="xml">
         <tree>
           <field name="name"/>
@@ -14,47 +14,33 @@
       </field>
     </record>
 
-
-    <!-- actions opening views on models -->
-
-    <record model="ir.actions.act_window" id="master_details.action_window">
-      <field name="name">master_details window</field>
-      <field name="res_model">master_details.master_details</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-
-
-    <!-- server action to the one above -->
-
-    <record model="ir.actions.server" id="master_details.action_server">
-      <field name="name">master_details server</field>
-      <field name="model_id" ref="model_master_details_master_details"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": model._name,
-        }
+    <!-- Определение представления формы -->
+    <record model="ir.ui.view" id="view_masterdetails_form">
+      <field name="name">MasterDetails Form View</field>
+      <field name="model">masterdetails.masterdetails</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="value"/>
+              <field name="value2"/>
+            </group>
+          </sheet>
+        </form>
       </field>
     </record>
 
+    <!-- Определение действия открытия списка -->
+    <record model="ir.actions.act_window" id="action_masterdetails">
+      <field name="name">MasterDetails</field>
+      <field name="res_model">masterdetails.masterdetails</field>
+      <field name="view_mode">tree,form</field>
+    </record>
 
-    <!-- Top menu item -->
-
-    <menuitem name="master_details" id="master_details.menu_root"/>
-
-    <!-- menu categories -->
-
-    <menuitem name="Menu 1" id="master_details.menu_1" parent="master_details.menu_root"/>
-    <menuitem name="Menu 2" id="master_details.menu_2" parent="master_details.menu_root"/>
-
-    <!-- actions -->
-
-    <menuitem name="List" id="master_details.menu_1_list" parent="master_details.menu_1"
-              action="master_details.action_window"/>
-    <menuitem name="Server to list" id="master_details" parent="master_details.menu_2"
-              action="master_details.action_server"/>
+    <!-- Добавление представлений в группу "Views" -->
+    <menuitem name="MasterDetails" id="menu_masterdetails" sequence="1"/>
+    <menuitem name="MasterDetails List" id="menu_masterdetails_list" parent="menu_masterdetails" action="action_masterdetails"/>
 
   </data>
 </odoo>
