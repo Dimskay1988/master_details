@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_master_details_master_details,masterdetails.masterdetails access,model_masterdetails_masterdetails,base.group_public,1,1,1,1
+access_contract_contract,contract.contract access,model_contract_contract,base.group_user,1,1,1,1
+access_contract_act,contract.act access,model_contract_act,base.group_user,1,1,1,1
