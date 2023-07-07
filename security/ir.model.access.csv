@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_contract_contract,contract.contract access,model_contract_contract,base.group_user,1,1,1,1
-access_contract_act,contract.act access,model_contract_act,base.group_user,1,1,1,1
+access_contract_contract,Contract Manager,model_contract_contract,base.group_user,1,1,1,0
+access_contract_act,Act Manager,model_contract_act,base.group_user,1,1,1,0
+access_contract_work,Work Manager,model_contract_work,base.group_user,1,1,1,0
+access_contract_subwork,Sub Work Manager,model_contract_subwork,base.group_user,1,1,1,0
