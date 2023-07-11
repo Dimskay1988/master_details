@@ -8,6 +8,7 @@
                 <tree>
                     <field name="name"/>
                     <field name="description"/>
+                    <field name="create_date"/>
                 </tree>
             </field>
         </record>
@@ -22,14 +23,21 @@
                         <group>
                             <field name="name"/>
                             <field name="description"/>
+                            <field name="client"/>
+                            <field name="subcontractor"/>
+                            <field name="create_date"/>
                         </group>
+                        <notebook>
+                            <page string="Act">
+                                <field name="acts_ids" widget="one2many_list">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="create_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
-                    <notebook>
-                        <!-- Вкладка для отображения списка актов -->
-                        <page string="Acts">
-                            <field name="acts_ids" widget="many2many_list"/> <!-- Отображение списка актов -->
-                        </page>
-                    </notebook>
                 </form>
             </field>
         </record>
@@ -42,23 +50,27 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="name"/>
-                            <field name="description"/>
+                            <group string="Info">
+                                <field name="contract_id"/>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="address"/>
+                                <field name="master_id"/>
+                                <field name="phone_number"/>
+                                <field name="preliminary_dismantling"/>
+                                <field name="permission_excavate"/>
+                                <field name="date_receipt_work"/>
+                            </group>
                         </group>
                         <notebook>
                             <page string="Works">
-                                <field name="work_ids" widget="one2many_list">
-                                    <tree editable="bottom">
-                                        <field name="name"/>
+                                <field name="work_ids">
+                                    <tree>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
                                         <field name="description"/>
-                                        <field name="quantity"/>
-                                        <field name="unit"/>
                                     </tree>
                                 </field>
-                            </page>
-                            <page string="Photos">
-                                <field name="photos" widget="many2many_binary"
-                                       options="{'no_create': True, 'no_open': True}"/>
                             </page>
                         </notebook>
                     </sheet>
