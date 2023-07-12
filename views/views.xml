@@ -1,74 +1,138 @@
 <odoo>
-  <data>
-    <!-- Определение представления списка контрактов -->
-    <record model="ir.ui.view" id="master_details_contract_list_view">
-      <field name="name">MasterDetails Contract List View</field>
-      <field name="model">contract.contract</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="description"/>
-        </tree>
-      </field>
-    </record>
+    <data>
+        <!-- Определение представления списка контрактов -->
+        <record model="ir.ui.view" id="master_details_contract_list_view">
+            <field name="name">MasterDetails Contract List View</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="create_date"/>
+                </tree>
+            </field>
+        </record>
 
-    <!-- Определение представления формы контракта -->
-    <record model="ir.ui.view" id="master_details_contract_form_view">
-      <field name="name">MasterDetails Contract Form View</field>
-      <field name="model">contract.contract</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <group>
-              <field name="name"/>
-              <field name="description"/>
-            </group>
-          </sheet>
-          <notebook>
-            <!-- Вкладка для отображения списка актов -->
-            <page string="Acts">
-              <field name="acts_ids" widget="many2many_list"/> <!-- Отображение списка актов -->
-            </page>
-          </notebook>
-        </form>
-      </field>
-    </record>
+        <!-- Определение представления формы контракта -->
+        <record model="ir.ui.view" id="master_details_contract_form_view">
+            <field name="name">MasterDetails Contract Form View</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="client"/>
+                            <field name="subcontractor"/>
+                            <field name="create_date"/>
+                        </group>
+                        <notebook>
+                            <page string="Act">
+                                <field name="acts_ids" widget="one2many_list">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="create_date"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- Определение представления формы акта -->
-    <record model="ir.ui.view" id="master_details_act_form_view">
-      <field name="name">MasterDetails Act Form View</field>
-      <field name="model">contract.act</field>
-      <field name="arch" type="xml">
-        <form>
-          <sheet>
-            <group>
-              <field name="name"/>
-              <field name="description"/>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
+        <!-- Определение представления формы акта -->
+        <record model="ir.ui.view" id="contract_act_form_view">
+            <field name="name">Act Form View</field>
+            <field name="model">contract.act</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group string="Info">
+                                <field name="contract_id"/>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="address"/>
+                                <field name="master_id"/>
+                                <field name="phone_number"/>
+                                <field name="preliminary_dismantling"/>
+                                <field name="permission_excavate"/>
+                                <field name="date_receipt_work"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Works">
+                                <field name="work_ids">
+                                    <tree>
+                                        <field name="start_date"/>
+                                        <field name="end_date"/>
+                                        <field name="description"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- Определение действия открытия списка контрактов -->
-    <record model="ir.actions.act_window" id="master_details_contract_action">
-      <field name="name">MasterDetails Contract</field>
-      <field name="res_model">contract.contract</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+        <record model="ir.ui.view" id="view_contract_job_form">
+            <field name="name">contract.job.form</field>
+            <field name="model">contract.job</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                        <notebook>
+                            <page string="Groups">
+                                <field name="group_ids">
+                                    <tree>
+                                        <field name="description"/>
+                                        <field name="diameter"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <!-- Определение действия открытия списка актов -->
-    <record model="ir.actions.act_window" id="master_details_act_action">
-      <field name="name">MasterDetails Act</field>
-      <field name="res_model">contract.act</field>
-      <field name="view_mode">tree</field>
-      <field name="context">{"search_default_contract_id": active_id}</field> <!-- Фильтр по контракту -->
-    </record>
 
-    <!-- Добавление представлений в меню -->
-    <menuitem name="MasterDetails" id="menu_master_details" sequence="1"/>
-    <menuitem name="MasterDetails Contracts" id="menu_master_details_contracts" parent="menu_master_details"
-              action="master_details_contract_action"/>
+        <!-- Определение действия открытия списка контрактов -->
+        <record model="ir.actions.act_window" id="master_details_contract_action">
+            <field name="name">MasterDetails Contract</field>
+            <field name="res_model">contract.contract</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-  </data>
+        <!-- Определение действия открытия списка актов -->
+        <record model="ir.actions.act_window" id="master_details_act_action">
+            <field name="name">MasterDetails Act</field>
+            <field name="res_model">contract.act</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{"search_default_contract_id": False}</field>
+        </record>
+
+        <!-- Определение действия открытия списка справочника Job -->
+        <record model="ir.actions.act_window" id="action_contract_job">
+            <field name="name">MasterDetails Jobs</field>
+            <field name="res_model">contract.job</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <!-- Добавление представлений в меню -->
+        <menuitem name="MasterDetails" id="menu_master_details" sequence="1"/>
+        <menuitem name="Contracts" id="menu_master_details_contracts" parent="menu_master_details"
+                  action="master_details_contract_action"/>
+        <menuitem name="Acts" id="menu_master_details_acts" parent="menu_master_details"
+                  action="master_details_act_action"/>
+        <menuitem name="Job" id="menu_contract_job" parent="menu_master_details"
+                  action="action_contract_job"/>
+    </data>
 </odoo>
