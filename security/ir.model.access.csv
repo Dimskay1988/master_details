@@ -4,3 +4,4 @@ access_contract_act,Act Manager,model_contract_act,base.group_user,1,1,1,1
 access_contract_work,Work Manager,model_contract_work,base.group_user,1,1,1,1
 access_contract_job,Job Manager,model_contract_job,base.group_user,1,1,1,1
 access_contract_group,Group Manager,model_contract_group,base.group_user,1,1,1,1
+

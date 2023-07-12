@@ -50,34 +50,54 @@
                 <form>
                     <sheet>
                         <group>
-                            <group string="Info">
-                                <field name="contract_id"/>
-                                <field name="name"/>
-                                <field name="description"/>
-                                <field name="address"/>
-                                <field name="master_id"/>
-                                <field name="phone_number"/>
-                                <field name="preliminary_dismantling"/>
-                                <field name="permission_excavate"/>
-                                <field name="date_receipt_work"/>
-                            </group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="contract_id"/>
+                            <field name="address"/>
+                            <!--                            <field name="master_id"/>-->
+                            <field name="phone_number"/>
+                            <field name="date_receipt_work"/>
+                            <field name="preliminary_dismantling"/>
+                            <field name="permission_excavate"/>
                         </group>
                         <notebook>
-                            <page string="Works">
-                                <field name="work_ids">
-                                    <tree>
-                                        <field name="start_date"/>
-                                        <field name="end_date"/>
-                                        <field name="description"/>
-                                    </tree>
-                                </field>
-                            </page>
+
                         </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
 
+        <!-- Определение представления формы WORKS -->
+        <record model="ir.ui.view" id="contract_work_form_view">
+    <field name="name">Work Form View</field>
+    <field name="model">contract.work</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <tree>
+                    <field name="act_id"/>
+                    <field name="description"/>
+                </tree>
+                <notebook>
+                    <page string="Work Details">
+                        <field name="job_ids" widget="many2many_tags"/>
+                        <field name="group_ids" attrs="{'invisible': [('job_ids', '=', False)]}">
+                            <tree>
+                                <field name="description"/>
+                                <field name="diameter"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+
+
+        <!-- Определение представления формы JOB -->
         <record model="ir.ui.view" id="view_contract_job_form">
             <field name="name">contract.job.form</field>
             <field name="model">contract.job</field>
@@ -125,6 +145,13 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <!-- Определение действия открытия списка справочника Works -->
+        <record model="ir.actions.act_window" id="action_contract_work">
+            <field name="name">Work</field>
+            <field name="res_model">contract.work</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
 
         <!-- Добавление представлений в меню -->
         <menuitem name="MasterDetails" id="menu_master_details" sequence="1"/>
@@ -134,5 +161,15 @@
                   action="master_details_act_action"/>
         <menuitem name="Job" id="menu_contract_job" parent="menu_master_details"
                   action="action_contract_job"/>
+        <menuitem name="Works" id="menu_contract_works" parent="menu_master_details"
+                  action="action_contract_work"/>
+
+        <!--        &lt;!&ndash; Включение JavaScript-файла &ndash;&gt;-->
+        <!--        <template id="assets_backend" name="master_details" inherit_id="web.assets_backend">-->
+        <!--            <xpath expr="." position="inside">-->
+        <!--                <script type="text/javascript" src="/master_details/static/src/js/custom.js"></script>-->
+        <!--            </xpath>-->
+        <!--        </template>-->
+
     </data>
 </odoo>

@@ -32,7 +32,7 @@ class Act(models.Model):
     description = fields.Text(string='Description')
     contract_id = fields.Many2one('contract.contract', string='Contract')
     address = fields.Char(string='Address')
-    master_id = fields.Many2one('hr.employee', string='Master')
+    # master_id = fields.Many2one('hr.employee', string='Master')
     phone_number = fields.Text(string='Phone Number')
     date_receipt_work = fields.Date(string='Date of receipt of work')
     preliminary_dismantling = fields.Integer(string='Ardomas preliminarus dangų plotas')
@@ -45,19 +45,25 @@ class Work(models.Model):
     _description = 'Repair Works'
 
     description = fields.Text(string='Description')
-    quantity = fields.Float(string='Quantity')
-    coverage_type = fields.Char(string='Coverage Type')
-    unit = fields.Char(string='Unit of measurement')
-    unit_price = fields.Float(string='Unit Price')
+    # quantity = fields.Float(string='Quantity')
+    # coverage_type = fields.Char(string='Coverage Type')
+    # unit = fields.Char(string='Unit of measurement')
+    # unit_price = fields.Float(string='Unit Price')
+    # start_date = fields.Date(string='Start Date')
+    # end_date = fields.Date(string='End Date')
+    act_id = fields.Many2one('contract.act', string='Act')
+    # precipitation_date = fields.Date(string='Precipitation Date')
+    description_precipitation = fields.Text(string='Description of precipitation')
+    # reference_ids = fields.Many2many('contract.reference', string='References')
+    job_ids = fields.Many2many('contract.job', string='Jobs')
     # photos = fields.Many2many('ir.attachment', string='Photos')
     # employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
-    start_date = fields.Date(string='Start Date')
-    end_date = fields.Date(string='End Date')
-    act_id = fields.Many2one('contract.act', string='Act')
-    precipitation_date = fields.Date(string='Precipitation Date')
-    description_precipitation = fields.Text(string='Description of precipitation')
-    reference_ids = fields.Many2many('contract.reference', string='References')
-    job_id = fields.Many2one('contract.job', string='Job')
+    group_ids = fields.Many2many('contract.group', string='Groups', compute='_compute_group_ids')
+
+    @api.depends('job_ids')
+    def _compute_group_ids(self):
+        for work in self:
+            work.group_ids = work.job_ids.mapped('group_ids')
 
 
 class Jobs(models.Model):
@@ -65,7 +71,7 @@ class Jobs(models.Model):
     _description = 'Jobs'
 
     name = fields.Char(string='Name of job')
-    work_id = fields.Many2one('contract.work', string='Work')
+    works_ids = fields.One2many('contract.work', 'job_ids', string='Works')
     group_ids = fields.One2many('contract.group', 'job_id', string='Groups')
 
 
