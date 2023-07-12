@@ -1,2 +1,1 @@
-# MasterDetails
-
+# master_details
