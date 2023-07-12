@@ -68,8 +68,8 @@
             </field>
         </record>
 
-        <!-- Определение представления формы WORKS -->
-        <record model="ir.ui.view" id="contract_work_form_view">
+<!-- Определение представления формы WORKS -->
+<record model="ir.ui.view" id="contract_work_form_view">
     <field name="name">Work Form View</field>
     <field name="model">contract.work</field>
     <field name="arch" type="xml">
@@ -81,19 +81,15 @@
                 </tree>
                 <notebook>
                     <page string="Work Details">
-                        <field name="job_ids" widget="many2many_tags"/>
-                        <field name="group_ids" attrs="{'invisible': [('job_ids', '=', False)]}">
-                            <tree>
-                                <field name="description"/>
-                                <field name="diameter"/>
-                            </tree>
-                        </field>
+                        <field name="job_ids" widget="many2many_tags" limit="1"/>
+                        <field name="group_id" options="{'no_open': True}" widget="many2one"/>
                     </page>
                 </notebook>
             </sheet>
         </form>
     </field>
 </record>
+
 
 
 

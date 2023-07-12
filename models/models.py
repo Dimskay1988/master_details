@@ -54,16 +54,23 @@ class Work(models.Model):
     act_id = fields.Many2one('contract.act', string='Act')
     # precipitation_date = fields.Date(string='Precipitation Date')
     description_precipitation = fields.Text(string='Description of precipitation')
-    # reference_ids = fields.Many2many('contract.reference', string='References')
     job_ids = fields.Many2many('contract.job', string='Jobs')
     # photos = fields.Many2many('ir.attachment', string='Photos')
     # employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
-    group_ids = fields.Many2many('contract.group', string='Groups', compute='_compute_group_ids')
+    group_id = fields.Many2one('contract.group', string='Group')
 
     @api.depends('job_ids')
     def _compute_group_ids(self):
         for work in self:
             work.group_ids = work.job_ids.mapped('group_ids')
+
+    @api.depends('job_ids')
+    def _compute_group_id(self):
+        for work in self:
+            if work.job_ids:
+                work.group_id = work.job_ids[0].group_ids.job_id
+            else:
+                work.group_id = False
 
 
 class Jobs(models.Model):
@@ -74,6 +81,13 @@ class Jobs(models.Model):
     works_ids = fields.One2many('contract.work', 'job_ids', string='Works')
     group_ids = fields.One2many('contract.group', 'job_id', string='Groups')
 
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.name
+            result.append((record.id, name))
+        return result
+
 
 class GroupJobs(models.Model):
     _name = 'contract.group'
@@ -82,3 +96,10 @@ class GroupJobs(models.Model):
     description = fields.Text(string='Description')
     diameter = fields.Char(string='Diameter')
     job_id = fields.Many2one('contract.job', string='Job')
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = f"{record.diameter} - {record.description}"
+            result.append((record.id, name))
+        return result
