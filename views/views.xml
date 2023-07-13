@@ -144,7 +144,7 @@
                   action="master_details_contract_action"/>
         <menuitem name="Acts" id="menu_master_details_acts" parent="menu_master_details"
                   action="master_details_act_action"/>
-        <menuitem name="Job" id="menu_contract_job" parent="menu_master_details"
+        <menuitem name="Work guide" id="menu_contract_job" parent="menu_master_details"
                   action="action_contract_job"/>
 
     </data>
