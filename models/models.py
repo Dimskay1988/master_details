@@ -54,10 +54,10 @@ class Work(models.Model):
     act_id = fields.Many2one('contract.act', string='Act')
     # precipitation_date = fields.Date(string='Precipitation Date')
     description_precipitation = fields.Text(string='Description of precipitation')
-    job_id = fields.Many2one('contract.job', string='Job')
+    job_id = fields.Many2one('contract.job', string='Group')
     # photos = fields.Many2many('ir.attachment', string='Photos')
     # employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
-    group_id = fields.Many2one('contract.group', string='Group')
+    group_id = fields.Many2one('contract.group', string='Job')
 
     @api.depends('job_ids')
     def _compute_group_ids(self):
