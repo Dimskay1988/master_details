@@ -43,38 +43,44 @@
         </record>
 
         <!-- Определение представления формы акта -->
-<record model="ir.ui.view" id="contract_act_form_view">
-    <field name="name">Act Form View</field>
-    <field name="model">contract.act</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <group>
-                        <field name="name"/>
-                        <field name="description"/>
-                        <field name="contract_id"/>
-                        <field name="address"/>
-                        <field name="phone_number"/>
-                        <field name="date_receipt_work"/>
-                        <field name="preliminary_dismantling"/>
-                        <field name="permission_excavate"/>
-                    </group>
-                    <div>
-                        <field name="work_ids" widget="one2many_list">
-                            <tree editable="bottom">
+        <record model="ir.ui.view" id="contract_act_form_view">
+            <field name="name">Act Form View</field>
+            <field name="model">contract.act</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
                                 <field name="description"/>
-                                <field name="job_id"/>
-                                <field name="group_id" domain="[('job_id', '=', parent.id)]"/>
-                            </tree>
-                        </field>
-                    </div>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
-
+                                <field name="contract_id"/>
+                                <field name="master_id" widget="one2many_list"/>
+                                <field name="address"/>
+                                <field name="phone_number"/>
+                                <field name="date_receipt_work"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="preliminary_dismantling"/>
+                                <field name="permission_excavate"/>
+                            </group>
+                            <notebook>
+                                <page string="Works">
+                                    <field name="work_ids" widget="one2many_list">
+                                        <tree editable="bottom">
+                                            <field name="unit"/>
+                                            <field name="quantity"/>
+                                            <field name="description"/>
+                                            <field name="job_id"/>
+                                            <field name="group_id" domain="[('job_id', '=', parent.id)]"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
         <!-- Определение представления формы JOB -->
