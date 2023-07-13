@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class Contract(models.Model):
@@ -54,7 +55,7 @@ class Work(models.Model):
     act_id = fields.Many2one('contract.act', string='Act')
     # precipitation_date = fields.Date(string='Precipitation Date')
     description_precipitation = fields.Text(string='Description of precipitation')
-    job_ids = fields.Many2many('contract.job', string='Jobs')
+    job_id = fields.Many2one('contract.job', string='Job')
     # photos = fields.Many2many('ir.attachment', string='Photos')
     # employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
     group_id = fields.Many2one('contract.group', string='Group')
@@ -72,14 +73,21 @@ class Work(models.Model):
             else:
                 work.group_id = False
 
+    @api.constrains('group_id')
+    def _check_group_id(self):
+        for work in self:
+            if work.group_id and work.group_id.job_id != work.job_id:
+                raise ValidationError("Selected group does not belong to the current job!")
+
 
 class Jobs(models.Model):
     _name = 'contract.job'
     _description = 'Jobs'
 
+    # job_name = fields.Char(related='job_id.name', string='Job Name')
     name = fields.Char(string='Name of job')
-    works_ids = fields.One2many('contract.work', 'job_ids', string='Works')
-    group_ids = fields.One2many('contract.group', 'job_id', string='Groups')
+    work_ids = fields.One2many('contract.work', 'job_id', string='Works')
+    group_ids = fields.One2many('contract.group', 'job_id', string='Groups', domain="[('job_id', '=', id)]")
 
     def name_get(self):
         result = []
@@ -103,3 +111,5 @@ class GroupJobs(models.Model):
             name = f"{record.diameter} - {record.description}"
             result.append((record.id, name))
         return result
+
+
