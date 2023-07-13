@@ -41,6 +41,8 @@ class Act(models.Model):
     preliminary_dismantling = fields.Integer(string='Ardomas preliminarus dangų plotas')
     permission_excavate = fields.Selection(selection=PERMISSION_SELECTION, string='Permission to excavate')
     work_ids = fields.One2many('contract.work', 'act_id', string='Works')
+    photos = fields.Many2many('ir.attachment', string='Photos')
+    employers_ids = fields.Many2many('hr.employee', string='Employees')
 
 
 class Work(models.Model):
@@ -50,13 +52,10 @@ class Work(models.Model):
     description = fields.Text(string='Description')
     quantity = fields.Float(string='Quantity')
     unit = fields.Char(string='Unit of measurement')
-    # unit_price = fields.Float(string='Unit Price')
     act_id = fields.Many2one('contract.act', string='Act')
-    # precipitation_date = fields.Date(string='Precipitation Date')
     description_precipitation = fields.Text(string='Description of precipitation')
     job_id = fields.Many2one('contract.job', string='Group')
-    # photos = fields.Many2many('ir.attachment', string='Photos')
-    # employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
+    employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
     group_id = fields.Many2one('contract.group', string='Job')
 
     @api.depends('job_ids')

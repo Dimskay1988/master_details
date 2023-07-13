@@ -75,6 +75,12 @@
                                         </tree>
                                     </field>
                                 </page>
+                                <page string="Photos">
+                                    <field name="photos" widget="many2many_binary"/>
+                                </page>
+                                <page string="Employees">
+                                    <field name="employers_ids" widget="one2many_list"/>
+                                </page>
                             </notebook>
                         </group>
                     </sheet>
