@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
 
 
 class Contract(models.Model):
@@ -44,6 +43,21 @@ class Act(models.Model):
     photos = fields.Many2many('ir.attachment', string='Photos')
     employers_ids = fields.Many2many('hr.employee', string='Employees')
 
+    def action_add_work(self):
+        view_id = self.env.ref('master_detail.work_guide_form_view').id
+        return {
+            'name': 'Add Work',
+            'view_mode': 'form',
+            'res_model': 'contract.work',
+            'type': 'ir.actions.act_window',
+            'view_id': view_id,
+            'target': 'new',
+            'context': {
+                'default_act_id': self.id,
+                'default_employers_ids': [(6, 0, self.employers_ids.ids)],
+            }
+        }
+
 
 class Work(models.Model):
     _name = 'contract.work'
@@ -54,60 +68,38 @@ class Work(models.Model):
     unit = fields.Char(string='Unit of measurement')
     act_id = fields.Many2one('contract.act', string='Act')
     description_precipitation = fields.Text(string='Description of precipitation')
-    job_id = fields.Many2one('contract.job', string='Group')
     employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
-    group_id = fields.Many2one('contract.group', string='Job')
+    guide_id = fields.Many2one('contract.guide', string='Work Guide')
+    get_group = fields.Char(string='ALL group', compute='_get_group', store=True)
 
-    @api.depends('job_ids')
-    def _compute_group_ids(self):
-        for work in self:
-            work.group_ids = work.job_ids.mapped('group_ids')
-
-    @api.depends('job_ids')
-    def _compute_group_id(self):
-        for work in self:
-            if work.job_ids:
-                work.group_id = work.job_ids[0].group_ids.job_id
-            else:
-                work.group_id = False
-
-    @api.constrains('group_id')
-    def _check_group_id(self):
-        for work in self:
-            if work.group_id and work.group_id.job_id != work.job_id:
-                raise ValidationError("Selected group does not belong to the current job!")
-
-
-class Jobs(models.Model):
-    _name = 'contract.job'
-    _description = 'Jobs'
-
-    # job_name = fields.Char(related='job_id.name', string='Job Name')
-    name = fields.Char(string='Name of job')
-    work_ids = fields.One2many('contract.work', 'job_id', string='Works')
-    group_ids = fields.One2many('contract.group', 'job_id', string='Groups', domain="[('job_id', '=', id)]")
-
-    def name_get(self):
-        result = []
+    @api.depends('guide_id', 'guide_id.diameter')
+    def _get_group(self):
         for record in self:
-            name = record.name
-            result.append((record.id, name))
-        return result
+            result = []
+            all_group = self.env['contract.guide']
+            all_records = all_group.search([])
+            for guide in all_records:
+                if guide.eil_nr.is_integer():
+                    result.append(guide.diameter)
+            record.get_group = ', '.join(result)
 
 
-class GroupJobs(models.Model):
-    _name = 'contract.group'
-    _description = 'GroupJobs'
+class WorkGuide(models.Model):
+    _name = 'contract.guide'
+    _description = 'WorkGuide'
 
-    description = fields.Text(string='Description')
+    eil_nr = fields.Float(string='Eil. Nr.')
+    parent_id = fields.Many2one('contract.guide', string='Parent Work')
+    group = fields.Char(string='Group')
     diameter = fields.Char(string='Diameter')
-    job_id = fields.Many2one('contract.job', string='Job')
+    operations = fields.Text(string='Operations')
 
     def name_get(self):
         result = []
-        for record in self:
-            name = f"{record.diameter} - {record.description}"
-            result.append((record.id, name))
+        all_records = self.search([])
+        for record in all_records:
+            if record.eil_nr.is_integer():
+                print(record.eil_nr)
+                result.append((record.id, record.diameter))
         return result
-
 
