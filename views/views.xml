@@ -89,7 +89,7 @@
         </record>
 
 
-        <!-- Определение представления формы JOB -->
+        <!-- Определение представления формы Work guide -->
         <record model="ir.ui.view" id="view_contract_job_form">
             <field name="name">contract.job.form</field>
             <field name="model">contract.job</field>
