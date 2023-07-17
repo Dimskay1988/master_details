@@ -72,15 +72,23 @@ class Work(models.Model):
     guide_id = fields.Many2one('contract.guide', string='Work Guide')
     get_group = fields.Selection(selection='_get_group_options', string='ALL group')
 
-    @api.depends()
+    @api.model
     def _get_group_options(self):
         result = []
         count = 0
-        all_operations = self.env['contract.guide'].name_get()
-        for operation in all_operations:
-            count += 1
-            result.append((f'operation {operation[0]}', f'{count} {operation[-1]}'))
+        all_guides = self.env['contract.guide'].search([])
+        for guide in all_guides:
+            if guide.eil_nr.is_integer():
+                count += 1
+                result.append((f'operation {guide.id}', f'{count} {guide.diameter}'))
         return result
+
+    @api.onchange('get_group')
+    def _onchange_get_group(self):
+        if self.get_group:
+            guide_id = int(self.get_group.split()[1])
+            print(guide_id)
+            return {'domain': {'guide_id': [('id', '=', guide_id)]}}
 
 
 class WorkGuide(models.Model):
