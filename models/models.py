@@ -71,6 +71,17 @@ class Work(models.Model):
     employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
     guide_id = fields.Many2one('contract.guide', string='Work Guide')
     get_group = fields.Selection(selection='_get_group_options', string='ALL group')
+    get_group_text = fields.Char(string='Group Text', compute='_compute_get_group_text')
+
+    @api.depends('get_group')
+    def _compute_get_group_text(self):
+        for record in self:
+            if record.get_group:
+                guide_id = int(record.get_group.split()[1])
+                guide = self.env['contract.guide'].browse(guide_id)
+                record.get_group_text = guide.diameter
+            else:
+                record.get_group_text = ''
 
     @api.model
     def _get_group_options(self):
@@ -82,13 +93,6 @@ class Work(models.Model):
                 count += 1
                 result.append((f'operation {guide.id}', f'{count} {guide.diameter}'))
         return result
-
-    @api.onchange('get_group')
-    def _onchange_get_group(self):
-        if self.get_group:
-            guide_id = int(self.get_group.split()[1])
-            print(guide_id)
-            return {'domain': {'guide_id': [('id', '=', guide_id)]}}
 
 
 class WorkGuide(models.Model):
@@ -105,7 +109,6 @@ class WorkGuide(models.Model):
         result = []
         all_records = self.search([])
         for record in all_records:
-            if record.eil_nr.is_integer():
-                result.append((record.id, record.diameter))
+            result.append((record.id, f'{record.eil_nr} {record.diameter}'))
         return result
 
