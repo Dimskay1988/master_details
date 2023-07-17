@@ -104,6 +104,13 @@ class WorkGuide(models.Model):
     group = fields.Char(string='Group')
     diameter = fields.Char(string='Diameter')
     operations = fields.Text(string='Operations')
+    unit = fields.Char(string='Unit')
+    quantity = fields.Float(string='Quantity')
+    materials = fields.Float(string='Materials')
+    works = fields.Float(string='Works')
+    mechanisms = fields.Float(string='Mechanical')
+    total_cost = fields.Float(string='Common unit excluding VAT')
+    total = fields.Float(string='Total including VAT')
 
     def name_get(self):
         result = []
