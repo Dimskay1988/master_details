@@ -43,51 +43,50 @@
         </record>
 
         <!-- Определение представления формы акта -->
-<record model="ir.ui.view" id="contract_act_form_view">
-    <field name="name">Act Form View</field>
-    <field name="model">contract.act</field>
-    <field name="arch" type="xml">
-        <form>
-            <sheet>
-                <group>
-                    <group>
-                        <field name="name"/>
-                        <field name="description"/>
-                        <field name="contract_id"/>
-                        <field name="master_id" widget="one2many_list"/>
-                        <field name="address"/>
-                        <field name="phone_number"/>
-                        <field name="date_receipt_work"/>
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="preliminary_dismantling"/>
-                        <field name="permission_excavate"/>
-                    </group>
-                    <notebook>
-                        <page string="Works">
-                            <field name="work_ids" widget="one2many_list">
-                                <tree editable="bottom">
-                                    <field name="quantity"/>
-                                    <field name="unit"/>
-                                    <field name="description"/>
-                                    <field name="get_group" widget="many2one"/>
-                                    <field name="guide_id" widget="many2one"/>
-                                </tree>
-                            </field>
-                        </page>
-                        <page string="Photos">
-                            <field name="photos" widget="many2many_binary"/>
-                        </page>
-                        <page string="Employees">
-                            <field name="employers_ids" widget="one2many_list"/>
-                        </page>
-                    </notebook>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
-
+        <record model="ir.ui.view" id="contract_act_form_view">
+            <field name="name">Act Form View</field>
+            <field name="model">contract.act</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="description"/>
+                                <field name="contract_id"/>
+                                <field name="master_id" widget="one2many_list"/>
+                                <field name="address"/>
+                                <field name="phone_number"/>
+                                <field name="date_receipt_work"/>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="preliminary_dismantling"/>
+                                <field name="permission_excavate"/>
+                            </group>
+                            <notebook>
+                                <page string="Works">
+                                    <field name="work_ids" widget="one2many_list">
+                                        <tree editable="bottom">
+                                            <field name="quantity"/>
+                                            <field name="unit"/>
+                                            <field name="description"/>
+                                            <field name="get_group" widget="selection"/>
+                                            <field name="guide_id" widget="one2many_list"/>
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page string="Photos">
+                                    <field name="photos" widget="many2many_binary"/>
+                                </page>
+                                <page string="Employees">
+                                    <field name="employers_ids" widget="one2many_list"/>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
 
         <!-- Определение представления формы WorkGuide -->

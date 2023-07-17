@@ -70,18 +70,17 @@ class Work(models.Model):
     description_precipitation = fields.Text(string='Description of precipitation')
     employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
     guide_id = fields.Many2one('contract.guide', string='Work Guide')
-    get_group = fields.Char(string='ALL group', compute='_get_group', store=True)
+    get_group = fields.Selection(selection='_get_group_options', string='ALL group')
 
-    @api.depends('guide_id', 'guide_id.diameter')
-    def _get_group(self):
-        for record in self:
-            result = []
-            all_group = self.env['contract.guide']
-            all_records = all_group.search([])
-            for guide in all_records:
-                if guide.eil_nr.is_integer():
-                    result.append(guide.diameter)
-            record.get_group = ', '.join(result)
+    @api.depends()
+    def _get_group_options(self):
+        result = []
+        count = 0
+        all_operations = self.env['contract.guide'].name_get()
+        for operation in all_operations:
+            count += 1
+            result.append((f'operation {operation[0]}', f'{count} {operation[-1]}'))
+        return result
 
 
 class WorkGuide(models.Model):
@@ -99,7 +98,6 @@ class WorkGuide(models.Model):
         all_records = self.search([])
         for record in all_records:
             if record.eil_nr.is_integer():
-                print(record.eil_nr)
                 result.append((record.id, record.diameter))
         return result
 
