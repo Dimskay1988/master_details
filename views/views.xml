@@ -74,7 +74,8 @@
 
                                             <!--                                    <field name="get_group" widget="selection"/>-->
                                             <field name="guide_id" widget="one2many_list"/>
-                                            <field name="parent_eil_nr" widget="selection"/>
+                                            <field name="parent_eil_nr"/>
+                                            <!--                                            <field name="parent_eil_nr" widget="selection"/>-->
                                         </tree>
                                     </field>
                                 </page>
@@ -131,13 +132,13 @@
         </record>
 
         <!-- Определение действия вывода отчёта -->
-        <record id="master_details.report_contract_guide" model="ir.actions.report">
-            <field name="name">Work Guide Report</field>
+        <!-- Определение действия вывода отчёта -->
+        <record id="action_report_custom" model="ir.actions.report">
+            <field name="name">Custom Report</field>
             <field name="model">contract.guide</field>
             <field name="report_type">qweb-pdf</field>
-            <field name="report_name">module_name.report_template_id</field>
-            <field name="report_file">module_name.report_template_filename</field>
-            <field name="binding_model_id" ref="model_contract_guide"/>
+            <field name="report_name">master_details.report_custom_template
+            </field> <!-- Replace "module_name" with your actual module name -->
         </record>
 
 
@@ -154,10 +155,9 @@
                   action="master_details_contract_action"/>
         <menuitem name="Tasks" id="menu_master_details_acts" parent="menu_master_details"
                   action="master_details_act_action"/>
-
         <menuitem name="Work guide" id="menu_contract_guide" parent="menu_master_details"
                   action="action_contract_guide"/>
-
-
+        <menuitem name="Custom Report" id="menu_custom_report" parent="menu_master_details"
+                  action="action_report_custom"/>
     </data>
 </odoo>
