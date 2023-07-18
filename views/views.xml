@@ -48,6 +48,7 @@
             <field name="model">contract.act</field>
             <field name="arch" type="xml">
                 <form>
+                    <script type="text/javascript" src="/master_details/static/src/js/custom.js"></script>
                     <sheet>
                         <group>
                             <group>
@@ -70,8 +71,10 @@
                                             <field name="quantity"/>
                                             <field name="unit"/>
                                             <field name="description"/>
+
                                             <!--                                    <field name="get_group" widget="selection"/>-->
                                             <field name="guide_id" widget="one2many_list"/>
+                                            <field name="parent_eil_nr" widget="selection"/>
                                         </tree>
                                     </field>
                                 </page>
@@ -125,6 +128,16 @@
             <field name="res_model">contract.act</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{"search_default_contract_id": False}</field>
+        </record>
+
+        <!-- Определение действия вывода отчёта -->
+        <record id="master_details.report_contract_guide" model="ir.actions.report">
+            <field name="name">Work Guide Report</field>
+            <field name="model">contract.guide</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">module_name.report_template_id</field>
+            <field name="report_file">module_name.report_template_filename</field>
+            <field name="binding_model_id" ref="model_contract_guide"/>
         </record>
 
 

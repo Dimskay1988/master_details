@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from lxml import etree
+import xml.etree.ElementTree as ET
 
 
 class Contract(models.Model):
@@ -58,6 +60,27 @@ class Act(models.Model):
             }
         }
 
+    @api.model
+    def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+        result = super(Act, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar,
+                                                  submenu=submenu)
+
+        if view_type == 'form':
+            doc = etree.XML(result['arch'])
+            guide_id_field = doc.xpath("//field[@name='guide_id']")
+            if guide_id_field:
+                guide_id_field = guide_id_field[0]
+                parent_eil_nr = self.env.context.get('default_parent_eil_nr')
+                if parent_eil_nr:
+                    domain = "[('eil_nr', '=', %s)]" % parent_eil_nr
+                else:
+                    domain = "[]"
+
+                guide_id_field.set('domain', domain)
+
+            result['arch'] = etree.tostring(doc)
+        return result
+
 
 class Work(models.Model):
     _name = 'contract.work'
@@ -72,6 +95,7 @@ class Work(models.Model):
     guide_id = fields.Many2one('contract.guide', string='Work Guide')
     get_group = fields.Selection(selection='_get_group_options', string='ALL group')
     get_group_text = fields.Char(string='Group Text', compute='_compute_get_group_text')
+    parent_eil_nr = fields.Float(string='Parent Eil. Nr.', related='guide_id.eil_nr', store=True)
 
     @api.depends('get_group')
     def _compute_get_group_text(self):
@@ -119,3 +143,25 @@ class WorkGuide(models.Model):
             result.append((record.id, f'{record.eil_nr} {record.diameter}'))
         return result
 
+    def print_report(self):
+        return self.env.ref('your_module.report_contract_guide').report_action(self)
+
+
+def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu=False):
+    result = super(Act, self).fields_view_get(view_id=view_id, view_type=view_type, toolbar=toolbar, submenu=submenu)
+
+    if view_type == 'form':
+        doc = ET.fromstring(result['arch'])
+        guide_id_field = doc.find(".//field[@name='guide_id']")
+        if guide_id_field is not None:
+            parent_eil_nr = self.env.context.get('default_parent_eil_nr')
+            if parent_eil_nr:
+                domain = "[('eil_nr', '=', %s)]" % parent_eil_nr
+            else:
+                domain = "[]"
+
+            guide_id_field.set('domain', domain)
+
+        result['arch'] = ET.tostring(doc, encoding='unicode')
+
+    return result
