@@ -115,6 +115,28 @@
             </field>
         </record>
 
+        <!-- Определение представления формы репорта -->
+        <record model="ir.ui.view" id="contract_report_form_view">
+            <field name="name">Contract Report Form View</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="client"/>
+                            <field name="subcontractor"/>
+                            <field name="create_date"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <template id="report_contract_template">
+            <!-- Define your report template here -->
+        </template>
 
         <!-- Определение действия открытия списка контрактов -->
         <record model="ir.actions.act_window" id="master_details_contract_action">
@@ -132,13 +154,12 @@
         </record>
 
         <!-- Определение действия вывода отчёта -->
-        <!-- Определение действия вывода отчёта -->
-        <record id="action_report_custom" model="ir.actions.report">
-            <field name="name">Custom Report</field>
-            <field name="model">contract.guide</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">master_details.report_custom_template
-            </field> <!-- Replace "module_name" with your actual module name -->
+        <record model="ir.actions.act_window" id="contract_report_action">
+            <field name="name">Contract Report</field>
+            <field name="res_model">contract.contract</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="contract_report_form_view"/>
+            <field name="target">current</field>
         </record>
 
 
@@ -149,6 +170,18 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <record id="action_report_contract" model="ir.actions.report">
+            <field name="name">Contract Report</field>
+            <field name="model">contract.contract</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">master_details.report_contract_template</field>
+        </record>
+
+        <template id="report_contract_template">
+            <!-- Define your report template here -->
+        </template>
+
+
         <!-- Добавление представлений в меню -->
         <menuitem name="MasterDetails" id="menu_master_details" sequence="1"/>
         <menuitem name="Contracts" id="menu_master_details_contracts" parent="menu_master_details"
@@ -157,7 +190,7 @@
                   action="master_details_act_action"/>
         <menuitem name="Work guide" id="menu_contract_guide" parent="menu_master_details"
                   action="action_contract_guide"/>
-        <menuitem name="Custom Report" id="menu_custom_report" parent="menu_master_details"
-                  action="action_report_custom"/>
+        <menuitem name="Custom Report" id="menu_contract_report" parent="menu_master_details"
+                  action="action_report_contract"/>
     </data>
 </odoo>

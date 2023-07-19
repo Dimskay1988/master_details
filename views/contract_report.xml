@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="report_contract_template" model="ir.ui.view">
+            <field name="name">Contract Report Template</field>
+            <field name="model">contract.contract</field>
+            <field name="arch" type="qweb">
+                <div>
+                    <h1>Contract Report</h1>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Contract Number</th>
+                                <th>Description</th>
+                                <th>Acts</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="contract">
+                                <tr>
+                                    <td><t t-esc="contract.name"/></td>
+                                    <td><t t-esc="contract.description"/></td>
+                                    <td>
+                                        <ul>
+                                            <t t-foreach="contract.acts_ids" t-as="act">
+                                                <li><t t-esc="act.name"/></li>
+                                            </t>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

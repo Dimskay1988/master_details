@@ -19,6 +19,9 @@ class Contract(models.Model):
         values['write_date'] = fields.Datetime.now()
         return super(Contract, self).write(values)
 
+    def generate_report_data(self):
+        return self.env['report.contract.contract'].render(self.ids, data=None)
+
 
 class Act(models.Model):
     _name = 'contract.act'
@@ -165,3 +168,4 @@ def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu
         result['arch'] = ET.tostring(doc, encoding='unicode')
 
     return result
+

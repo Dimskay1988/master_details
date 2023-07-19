@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <!-- Report Template for Contract -->
+        <template id="report_contract_template">
+            <div class="page">
+                <!-- Add the title here -->
+                <h1>Report: Work Done</h1>
+                <t t-foreach="docs" t-as="contract">
+                    <div>
+                        <h2><t t-esc="contract.name"/></h2>
+                        <p><t t-esc="contract.description"/></p>
+                        <p><t t-esc="contract.client.name"/></p>
+                        <p><t t-esc="contract.subcontractor.name"/></p>
+                        <p><t t-esc="contract.create_date"/></p>
+                        <!-- Add other fields here -->
+                    </div>
+                </t>
+            </div>
+        </template>
+    </data>
+</odoo>
