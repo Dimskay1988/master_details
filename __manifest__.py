@@ -28,6 +28,7 @@
         'views/views.xml',
         'report/reports.xml',
         'static/src/js/custom.js',
+        # 'static/src/css/custom_styles.css',
     ],
     # only loaded in demonstration mode
     'demo': [

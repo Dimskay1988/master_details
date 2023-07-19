@@ -1,21 +1,37 @@
 <odoo>
-    <data>
-        <!-- Report Template for Contract -->
-        <template id="report_contract_template">
-            <div class="page">
-                <!-- Add the title here -->
-                <h1>Report: Work Done</h1>
-                <t t-foreach="docs" t-as="contract">
-                    <div>
-                        <h2><t t-esc="contract.name"/></h2>
-                        <p><t t-esc="contract.description"/></p>
-                        <p><t t-esc="contract.client.name"/></p>
-                        <p><t t-esc="contract.subcontractor.name"/></p>
-                        <p><t t-esc="contract.create_date"/></p>
-                        <!-- Add other fields here -->
-                    </div>
-                </t>
-            </div>
-        </template>
-    </data>
+    <template id="report_contract_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="contract">
+                <div class="page">
+                    <h2 style="text-align: center;">Darbų sutarties Nr.: <t t-esc="contract.create_date"/></h2>
+                    <h2>Darbų sutarties Nr.: <t t-esc="contract.create_date"/></h2>
+                    <h2>Užsakovas: <t t-esc="contract.client"/></h2>
+                    <h2>Rangovas: <t t-esc="contract.subcontractor"/></h2>
+                    <h2>Report: Acts for <t t-esc="contract.name"/></h2>
+                    <table style="margin: auto; border-collapse: collapse; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid black;">Act Number</th>
+                                <th style="border: 1px solid black;">Address</th>
+                                <th style="border: 1px solid black;">Master</th>
+                                <th style="border: 1px solid black;">Start Date</th>
+                                <th style="border: 1px solid black;">End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="contract.acts_ids" t-as="act">
+                                <tr>
+                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.name"/></td>
+                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.address"/></td>
+                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.master_id.name"/></td>
+                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.start_date"/></td>
+                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.end_date"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
 </odoo>

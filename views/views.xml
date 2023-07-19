@@ -115,28 +115,6 @@
             </field>
         </record>
 
-        <!-- Определение представления формы репорта -->
-        <record model="ir.ui.view" id="contract_report_form_view">
-            <field name="name">Contract Report Form View</field>
-            <field name="model">contract.contract</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="description"/>
-                            <field name="client"/>
-                            <field name="subcontractor"/>
-                            <field name="create_date"/>
-                        </group>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-        <template id="report_contract_template">
-            <!-- Define your report template here -->
-        </template>
 
         <!-- Определение действия открытия списка контрактов -->
         <record model="ir.actions.act_window" id="master_details_contract_action">
@@ -153,16 +131,6 @@
             <field name="context">{"search_default_contract_id": False}</field>
         </record>
 
-        <!-- Определение действия вывода отчёта -->
-        <record model="ir.actions.act_window" id="contract_report_action">
-            <field name="name">Contract Report</field>
-            <field name="res_model">contract.contract</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="contract_report_form_view"/>
-            <field name="target">current</field>
-        </record>
-
-
         <!-- Определение действия для меню Guide -->
         <record model="ir.actions.act_window" id="action_contract_guide">
             <field name="name">Guide</field>
@@ -170,6 +138,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
+        <!-- Определение действия вывода отчёта -->
         <record id="action_report_contract" model="ir.actions.report">
             <field name="name">Contract Report</field>
             <field name="model">contract.contract</field>
@@ -178,6 +147,7 @@
         </record>
 
         <template id="report_contract_template">
+            <link rel="stylesheet" type="text/css" href="static/src/css/styles.css"/>
             <!-- Define your report template here -->
         </template>
 
@@ -190,7 +160,7 @@
                   action="master_details_act_action"/>
         <menuitem name="Work guide" id="menu_contract_guide" parent="menu_master_details"
                   action="action_contract_guide"/>
-        <menuitem name="Custom Report" id="menu_contract_report" parent="menu_master_details"
-                  action="action_report_contract"/>
+<!--        <menuitem name="Custom Report" id="menu_contract_report" parent="menu_master_details"-->
+<!--                  action="action_report_contract"/>-->
     </data>
 </odoo>
