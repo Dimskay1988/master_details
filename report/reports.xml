@@ -1,37 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="report_contract_template">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="contract">
                 <div class="page">
-                    <h2 style="text-align: center;">Darbų sutarties Nr.: <t t-esc="contract.create_date"/></h2>
-                    <h2>Darbų sutarties Nr.: <t t-esc="contract.create_date"/></h2>
-                    <h2>Užsakovas: <t t-esc="contract.client"/></h2>
-                    <h2>Rangovas: <t t-esc="contract.subcontractor"/></h2>
-                    <h2>Report: Acts for <t t-esc="contract.name"/></h2>
-                    <table style="margin: auto; border-collapse: collapse; width: 100%;">
+                    <style>
+                        /* Center text horizontally and vertically in table cells */
+                        table.bordered.centered {
+                            border-collapse: collapse;
+                        }
+
+                        table.bordered.centered th,
+                        table.bordered.centered td {
+                            border: 1px solid black;
+                            padding: 5px;
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+
+                        /* Center text in headers */
+                        table.bordered.centered th {
+                            font-weight: bold;
+                        }
+
+                        /* Center text in the "signatures" div */
+                        div.signatures {
+                            text-align: center;
+                        }
+
+                        div.signatory h4 {
+                            margin-bottom: 5px;
+                        }
+
+                        /* Center text in the h2 elements with class "centered" */
+                        h2.centered {
+                            text-align: center;
+                        }
+                        body, table, th, td {
+                            font-family: "Times New Roman", Times, serif;
+                        }
+                    </style>
+
+                    <h2 class="centered">ATLIKTŲ DARBŲ AKTAS</h2>
+
+                    <h3>Darbų sutartis: "<t t-esc="contract.short_description"/>"</h3>
+                    <h3>Darbų sutarties Nr.: <t t-esc="contract.name"/></h3>
+                    <h3>Užsakovas: <t t-esc="contract.client.name"/></h3>
+                    <h3>Rangovas: <t t-esc="contract.subcontractor.name"/></h3>
+
+                    <table class="bordered centered">
                         <thead>
                             <tr>
-                                <th style="border: 1px solid black;">Act Number</th>
-                                <th style="border: 1px solid black;">Address</th>
-                                <th style="border: 1px solid black;">Master</th>
-                                <th style="border: 1px solid black;">Start Date</th>
-                                <th style="border: 1px solid black;">End Date</th>
+                                <th>Eil. Nr.</th>
+                                <th>Darbų pavadinimas</th>
+                                <th>Darbų aprašymas</th>
+                                <th>Mato vienetas</th>
+                                <th>Kiekis</th>
+                                <th>1 mato vnt. kaina eur be PVM</th>
+                                <th>Vnt. kaina iš viso, Eur be PVM</th>
+                                <th>Iš viso Eur, be PVM</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="contract.acts_ids" t-as="act">
-                                <tr>
-                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.name"/></td>
-                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.address"/></td>
-                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.master_id.name"/></td>
-                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.start_date"/></td>
-                                    <td style="border: 1px solid black; text-align: center;"><t t-esc="act.end_date"/></td>
-                                </tr>
-                            </t>
+                            <t t-foreach="contract.work_ids" t-as="work">
+                            <tr>
+                                <td><t t-esc="work.guide_id.eil_nr"/></td>
+                                <td><t t-esc="work.guide_id.diameter"/></td>
+                                <td><t t-esc="work.guide_id.operations"/></td>
+                                <td><t t-esc="work.guide_id.unit"/></td>
+                                <td><t t-esc="work.quantity"/></td>
+                                <td><t t-esc="work.guide_id.materials"/></td>
+                                <td><t t-esc="work.guide_id.works"/></td>
+                                <td><t t-esc="work.guide_id.total"/></td>
+                            </tr>
+                        </t>
                         </tbody>
                     </table>
+
+                    <h3>Bendra vertė be PVM: <t t-esc=""/></h3>
+                    <h3>PVM 21 %: <t t-esc=""/></h3>
+                    <h3>Bendra vertė su PVM: <t t-esc=""/></h3>
+
+                    <div class="signatures">
+                        <div class="signatory">
+                            <h4>Užsakovas:</h4>
+                            <p><t t-esc="contract.client.name"/></p>
+                        </div>
+                        <div class="signatory">
+                            <h4>Rangovas:</h4>
+                            <p><t t-esc="contract.subcontractor.name"/></p>
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
     </template>
 </odoo>
+
+

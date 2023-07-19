@@ -22,6 +22,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="short_description"/>
                             <field name="description"/>
                             <field name="client"/>
                             <field name="subcontractor"/>
@@ -147,8 +148,9 @@
         </record>
 
         <template id="report_contract_template">
-            <link rel="stylesheet" type="text/css" href="static/src/css/styles.css"/>
-            <!-- Define your report template here -->
+             <!-- Link to the external CSS file -->
+<!--            <link rel="stylesheet" type="text/css" href="/master_details/static/src/css/custom_styles.css"/>-->
+
         </template>
 
 

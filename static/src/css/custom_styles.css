@@ -1,3 +1,26 @@
-.centered {
-    text-align: center;
+/* Center text horizontally and vertically in table cells */
+table.bordered.centered {
+  border-collapse: collapse;
+}
+
+table.bordered.centered th,
+table.bordered.centered td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* Center text in headers */
+table.bordered.centered th {
+  font-weight: bold;
+}
+
+/* Center text in the "signatures" div */
+div.signatures {
+  text-align: center;
+}
+
+div.signatory h4 {
+  margin-bottom: 5px;
 }

@@ -8,19 +8,45 @@ class Contract(models.Model):
     _description = 'Contracts'
 
     name = fields.Char(string='Contract Number')
+    short_description = fields.Char(string="short description")
+    contract_id = fields.Many2one('contract.contract', string='Contract')
     description = fields.Text(string='Description')
     create_date = fields.Datetime(string='Create Date', readonly=True, default=lambda self: fields.Datetime.now())
     write_date = fields.Datetime(string='Write Date', readonly=True)
     client = fields.Many2one('res.partner', string='Client', domain="[('is_company', '=', True)]")
     subcontractor = fields.Many2one('res.partner', string='Subcontractor', domain="[('is_company', '=', True)]")
     acts_ids = fields.One2many('contract.act', 'contract_id', string='Acts')
+    work_ids = fields.One2many('contract.work', 'contract_id', string='Works')
 
     def write(self, values):
         values['write_date'] = fields.Datetime.now()
         return super(Contract, self).write(values)
 
     def generate_report_data(self):
-        return self.env['report.contract.contract'].render(self.ids, data=None)
+        print("Generating")
+        report_data = []
+        for contract in self:
+            contract_data = {
+                'name': contract.name,
+                'short_description': contract.short_description,
+                'client_name': contract.client.name,
+                'subcontractor_name': contract.subcontractor.name,
+                'works': []
+            }
+            for work in contract.work_ids:
+                work_data = {
+                    'eil_nr': work.guide_id.eil_nr,
+                    'diameter': work.guide_id.diameter,
+                    'operations': work.guide_id.operations,
+                    'unit': work.guide_id.unit,
+                    'quantity': work.quantity,
+                    'materials': work.guide_id.materials,
+                    'works': work.guide_id.works,
+                    'total': work.guide_id.total,
+                }
+                contract_data['works'].append(work_data)
+            report_data.append(contract_data)
+        return report_data
 
 
 class Act(models.Model):
@@ -35,7 +61,6 @@ class Act(models.Model):
 
     name = fields.Char(string='Act Number')
     description = fields.Text(string='Description')
-    contract_id = fields.Many2one('contract.contract', string='Contract')
     address = fields.Char(string='Address')
     master_id = fields.Many2one('hr.employee', string='Master')
     phone_number = fields.Text(string='Phone Number')
@@ -44,6 +69,7 @@ class Act(models.Model):
     date_receipt_work = fields.Date(string='Date of receipt of work')
     preliminary_dismantling = fields.Integer(string='Ardomas preliminarus dangų plotas')
     permission_excavate = fields.Selection(selection=PERMISSION_SELECTION, string='Permission to excavate')
+    contract_id = fields.Many2one('contract.contract', string='Contract')
     work_ids = fields.One2many('contract.work', 'act_id', string='Works')
     photos = fields.Many2many('ir.attachment', string='Photos')
     employers_ids = fields.Many2many('hr.employee', string='Employees')
@@ -93,6 +119,7 @@ class Work(models.Model):
     quantity = fields.Float(string='Quantity')
     unit = fields.Char(string='Unit of measurement')
     act_id = fields.Many2one('contract.act', string='Act')
+    contract_id = fields.Many2one('contract.contract', string='Contract')
     description_precipitation = fields.Text(string='Description of precipitation')
     employers_ids = fields.Many2many('hr.employee', string='Employees', relation='act_employers_rel')
     guide_id = fields.Many2one('contract.guide', string='Work Guide')
@@ -138,6 +165,8 @@ class WorkGuide(models.Model):
     mechanisms = fields.Float(string='Mechanical')
     total_cost = fields.Float(string='Common unit excluding VAT')
     total = fields.Float(string='Total including VAT')
+    contract_id = fields.Many2one('contract.contract', string='Contract')
+    act_id = fields.Many2one('contract.act', string='Act')
 
     def name_get(self):
         result = []
