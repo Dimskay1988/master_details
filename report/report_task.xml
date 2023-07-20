@@ -1,0 +1,126 @@
+<odoo>
+    <template id="report_act_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="act">
+                <div class="page">
+                    <style>
+                        /* Center text horizontally and vertically in table cells */
+                        table.bordered.centered {
+                            border-collapse: collapse;
+                        }
+                        /* New CSS class for the table columns */
+                        table.bordered.centered.custom-width th,
+                        table.bordered.centered.custom-width td {
+                            padding: 5px;
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(1),
+                        table.bordered.centered.custom-width td:nth-child(1) {
+                            width: 7.5%;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(2),
+                        table.bordered.centered.custom-width td:nth-child(2) {
+                            width: 20%;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(3),
+                        table.bordered.centered.custom-width td:nth-child(3) {
+                            width: 20%;
+                        }
+
+                        table.bordered.centered th,
+                        table.bordered.centered td {
+                            border: 1px solid black;
+                            padding: 5px;
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+
+                        /* Center text in headers */
+                        table.bordered.centered th {
+                            font-weight: bold;
+                        }
+
+                        /* Center text in the "signatures" div */
+                        div.signatures {
+                            text-align: center;
+                        }
+
+                        div.signatory h4 {
+                            margin-bottom: 5px;
+                        }
+
+                        /* Center text in the h2 elements with class "centered" */
+                        h2.centered {
+                            text-align: center;
+                        }
+                        body, table, th, td {
+                            font-family: "Times New Roman", Times, serif;
+                        }
+                    </style>
+
+                    <h2 class="centered">ATLIKTŲ DARBŲ AKTAS</h2>
+<!--                    <h3>Darbų sutartis: "<t t-esc="act.short_description"/>"</h3>-->
+<!--                    <h3>Darbų sutarties Nr.: <t t-esc="act.name"/></h3>-->
+<!--                    <h3>Užsakovas: <t t-esc="act.client.name"/></h3>-->
+<!--                    <h3>Rangovas: <t t-esc="act.subcontractor.name"/></h3>-->
+
+                    <!-- Update the table headers and fields to display "acts" data -->
+                    <table class="bordered centered custom-width">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Eil. Nr.</th>
+                                <th rowspan="2">Darbų pavadinimas</th>
+                                <th rowspan="2">Darbų aprašymas</th>
+                                <th rowspan="2">Mato vienetas</th>
+                                <th rowspan="2">Kiekis</th>
+                                <th colspan="3">1 mato vnt. kaina eur be PVM</th>
+                                <th rowspan="2">Vnt. kaina iš viso, Eur be PVM</th>
+                                <th rowspan="2">Iš viso Eur, be PVM</th>
+                            </tr>
+                            <tr>
+                                <th>Medžiagų</th>
+                                <th>Darbų</th>
+                                <th>Mechanizmų</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="act.work_ids" t-as="work">
+                                <tr>
+                                    <td><t t-esc="work.guide_id.eil_nr"/></td>
+                                    <td><t t-esc="work.guide_id.diameter"/></td>
+                                    <td><t t-esc="work.guide_id.group"/></td>
+                                    <td><t t-esc="work.guide_id.unit"/></td>
+                                    <td><t t-esc="work.quantity"/></td>
+                                    <td><t t-esc="work.guide_id.materials"/></td>
+                                    <td><t t-esc="work.guide_id.works"/></td>
+                                    <td><t t-esc="work.guide_id.mechanisms"/></td>
+                                    <td><t t-esc="work.guide_id.total"/></td>
+                                    <td><t t-esc="work.guide_id.total"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <h3>Bendra vertė be PVM: <t t-esc=""/></h3>
+                    <h3>PVM 21 %: <t t-esc=""/></h3>
+                    <h3>Bendra vertė su PVM: <t t-esc=""/></h3>
+
+                    <div class="signatures">
+                        <div class="signatory">
+                            <h4>Užsakovas:</h4>
+<!--                            <p><t t-esc="contract.client.name"/></p>-->
+                        </div>
+                        <div class="signatory">
+                            <h4>Rangovas:</h4>
+<!--                            <p><t t-esc="contract.subcontractor.name"/></p>-->
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

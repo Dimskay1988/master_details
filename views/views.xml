@@ -43,8 +43,21 @@
             </field>
         </record>
 
+        <!-- Определение представления списка актов -->
+        <record model="ir.ui.view" id="master_details_act_tree_view">
+            <field name="name">MasterDetails Act Tree View</field>
+            <field name="model">contract.act</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="create_date"/>
+                    <field name="contract_id"/>
+                </tree>
+            </field>
+        </record>
+
         <!-- Определение представления формы акта -->
-        <record model="ir.ui.view" id="contract_act_form_view">
+        <record model="ir.ui.view" id="master_details_act_form_view">
             <field name="name">Act Form View</field>
             <field name="model">contract.act</field>
             <field name="arch" type="xml">
@@ -126,20 +139,33 @@
 
         <!-- Определение действия открытия списка актов -->
         <record model="ir.actions.act_window" id="master_details_act_action">
-            <field name="name">MasterDetails Act</field>
+            <field name="name">MasterDetails Tasks</field>
             <field name="res_model">contract.act</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{"search_default_contract_id": False}</field>
         </record>
+        <record model="ir.ui.view" id="master_details_act_tree_view"> </record>
+
+        <!-- Определение действия вывода отчёта  Task-->
+        <record model="ir.actions.report" id="action_report_act">
+            <field name="name">Task Report</field>
+            <field name="model">contract.act</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">master_details.report_act_template</field>
+            <field name="print_report_name">"Task Report"</field>
+            <field name="binding_model_id" ref="model_contract_act"/>
+        </record>
+
+        <template id="report_act_template"> </template>
 
         <!-- Определение действия для меню Guide -->
         <record model="ir.actions.act_window" id="action_contract_guide">
-            <field name="name">Guide</field>
+            <field name="name">MasterDetails Guide</field>
             <field name="res_model">contract.guide</field>
             <field name="view_mode">tree,form</field>
         </record>
 
-        <!-- Определение действия вывода отчёта -->
+        <!-- Определение действия вывода отчёта  контракта-->
         <record id="action_report_contract" model="ir.actions.report">
             <field name="name">Contract Report</field>
             <field name="model">contract.contract</field>
@@ -162,7 +188,6 @@
                   action="master_details_act_action"/>
         <menuitem name="Work guide" id="menu_contract_guide" parent="menu_master_details"
                   action="action_contract_guide"/>
-<!--        <menuitem name="Custom Report" id="menu_contract_report" parent="menu_master_details"-->
-<!--                  action="action_report_contract"/>-->
+
     </data>
 </odoo>
