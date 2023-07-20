@@ -9,6 +9,28 @@
                         table.bordered.centered {
                             border-collapse: collapse;
                         }
+                        /* New CSS class for the table columns */
+                        table.bordered.centered.custom-width th,
+                        table.bordered.centered.custom-width td {
+                            padding: 5px;
+                            text-align: center;
+                            vertical-align: middle;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(1),
+                        table.bordered.centered.custom-width td:nth-child(1) {
+                            width: 7.5%;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(2),
+                        table.bordered.centered.custom-width td:nth-child(2) {
+                            width: 20%;
+                        }
+
+                        table.bordered.centered.custom-width th:nth-child(3),
+                        table.bordered.centered.custom-width td:nth-child(3) {
+                            width: 20%;
+                        }
 
                         table.bordered.centered th,
                         table.bordered.centered td {
@@ -48,32 +70,41 @@
                     <h3>Užsakovas: <t t-esc="contract.client.name"/></h3>
                     <h3>Rangovas: <t t-esc="contract.subcontractor.name"/></h3>
 
-                    <table class="bordered centered">
+                    <table class="bordered centered custom-width">
                         <thead>
                             <tr>
-                                <th>Eil. Nr.</th>
-                                <th>Darbų pavadinimas</th>
-                                <th>Darbų aprašymas</th>
-                                <th>Mato vienetas</th>
-                                <th>Kiekis</th>
-                                <th>1 mato vnt. kaina eur be PVM</th>
-                                <th>Vnt. kaina iš viso, Eur be PVM</th>
-                                <th>Iš viso Eur, be PVM</th>
+                                <th rowspan="2">Eil. Nr.</th>
+                                <th rowspan="2">Darbų pavadinimas</th>
+                                <th rowspan="2">Darbų aprašymas</th>
+                                <th rowspan="2">Mato vienetas</th>
+                                <th rowspan="2">Kiekis</th>
+                                <th colspan="3">1 mato vnt. kaina eur be PVM</th>
+                                <th rowspan="2">Vnt. kaina iš viso, Eur be PVM</th>
+                                <th rowspan="2">Iš viso Eur, be PVM</th>
+                            </tr>
+                            <tr>
+                                <th>Medžiagų</th>
+                                <th>Darbų</th>
+                                <th>Mechanizmų</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="contract.work_ids" t-as="work">
-                            <tr>
-                                <td><t t-esc="work.guide_id.eil_nr"/></td>
-                                <td><t t-esc="work.guide_id.diameter"/></td>
-                                <td><t t-esc="work.guide_id.operations"/></td>
-                                <td><t t-esc="work.guide_id.unit"/></td>
-                                <td><t t-esc="work.quantity"/></td>
-                                <td><t t-esc="work.guide_id.materials"/></td>
-                                <td><t t-esc="work.guide_id.works"/></td>
-                                <td><t t-esc="work.guide_id.total"/></td>
-                            </tr>
-                        </t>
+                            <t t-foreach="contract.acts_ids" t-as="act">
+                                <t t-foreach="act.work_ids" t-as="work">
+                                    <tr>
+                                        <td><t t-esc="work.guide_id.eil_nr"/></td>
+                                        <td><t t-esc="work.guide_id.diameter"/></td>
+                                        <td><t t-esc="work.guide_id.group"/></td>
+                                        <td><t t-esc="work.guide_id.unit"/></td>
+                                        <td><t t-esc="work.quantity"/></td>
+                                        <td><t t-esc="work.guide_id.materials"/></td>
+                                        <td><t t-esc="work.guide_id.works"/></td>
+                                        <td><t t-esc="work.guide_id.mechanisms"/></td>
+                                        <td><t t-esc="work.guide_id.total"/></td>
+                                        <td><t t-esc="work.guide_id.total"/></td>
+                                    </tr>
+                                </t>
+                            </t>
                         </tbody>
                     </table>
 
