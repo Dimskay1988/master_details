@@ -80,17 +80,17 @@ class Act(models.Model):
     @api.depends('work_ids.only_in_euro_without_vat')
     def _compute_total_works_cost(self):
         for act in self:
-            act.total_works_cost = sum(work.only_in_euro_without_vat for work in act.work_ids)
+            act.total_works_cost = round(sum(work.only_in_euro_without_vat for work in act.work_ids), 2)
 
     @api.depends('total_works_cost')
     def _compute_vat_amount(self):
         for act in self:
-            act.vat_amount = act.total_works_cost * 0.21
+            act.vat_amount = round(act.total_works_cost * 0.21, 2)
 
     @api.depends('total_works_cost', 'vat_amount')
     def _compute_total_amount_with_vat(self):
         for act in self:
-            act.total_amount_with_vat = act.total_works_cost + act.vat_amount
+            act.total_amount_with_vat = round(act.total_works_cost + act.vat_amount, 2)
 
     def action_add_work(self):
         view_id = self.env.ref('master_detail.work_guide_form_view').id
@@ -149,10 +149,10 @@ class Work(models.Model):
     only_in_euro_without_vat = fields.Float(string='Only in euro without VAT',
                                             compute='_compute_total_in_euro')
 
-    @api.depends("total_unit_price_without_vat", "quantity")
+    @api.depends('total_unit_price_without_vat', 'quantity')
     def _compute_total_in_euro(self):
         for work in self:
-            total_price = work.total_unit_price_without_vat * work.quantity
+            total_price = round(work.total_unit_price_without_vat * work.quantity, 2)
             work.only_in_euro_without_vat = total_price if work.quantity and work.total_unit_price_without_vat else 0.0
 
     @api.depends('guide_id', 'guide_id.materials', 'guide_id.works', 'guide_id.mechanisms')
@@ -163,7 +163,7 @@ class Work(models.Model):
                 total_price += work.guide_id.materials
                 total_price += work.guide_id.works
                 total_price += work.guide_id.mechanisms
-            work.total_unit_price_without_vat = total_price
+            work.total_unit_price_without_vat = round(total_price, 2)
 
     @api.depends('get_group')
     def _compute_get_group_text(self):
@@ -205,6 +205,24 @@ class WorkGuide(models.Model):
     total = fields.Float(string='Total including VAT')
     contract_id = fields.Many2one('contract.contract', string='Contract')
     act_id = fields.Many2one('contract.act', string='Act')
+
+    @api.model
+    def create(self, vals):
+        # Round the values before creating the record
+        vals['materials'] = round(vals.get('materials', 0.0), 2)
+        vals['works'] = round(vals.get('works', 0.0), 2)
+        vals['mechanisms'] = round(vals.get('mechanisms', 0.0), 2)
+        return super(WorkGuide, self).create(vals)
+
+    def write(self, vals):
+        # Round the values before updating the record
+        if 'materials' in vals:
+            vals['materials'] = round(vals['materials'], 2)
+        if 'works' in vals:
+            vals['works'] = round(vals['works'], 2)
+        if 'mechanisms' in vals:
+            vals['mechanisms'] = round(vals['mechanisms'], 2)
+        return super(WorkGuide, self).write(vals)
 
 
     def name_get(self):

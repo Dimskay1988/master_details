@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="report_act_template">
         <t t-call="web.html_container">
@@ -94,7 +95,7 @@
                             <t t-foreach="act.work_ids" t-as="work">
                                 <tr>
                                     <td><t t-esc="work.guide_id.eil_nr"/></td>
-                                    <td><t t-esc="work.guide_id.diameter"/></td>
+                                    <td style="font-family: Arial, sans-serif;"><t t-esc="work.guide_id.diameter"/></td>
                                     <td><t t-esc="work.guide_id.group"/></td>
                                     <td><t t-esc="work.guide_id.unit"/></td>
                                     <td><t t-esc="work.quantity"/></td>
@@ -109,9 +110,9 @@
                     </table>
 
                     <div class="right-align">
-                        <h3>Bendra vertė be PVM: <t t-esc="act.total_works_cost"/></h3>
-                        <h3>PVM 21 %: <t t-esc="act.vat_amount"/></h3>
-                        <h3>Bendra vertė su PVM: <t t-esc="act.total_amount_with_vat"/></h3>
+                        <h2>Bendra vertė be PVM: <t t-esc="act.total_works_cost"/></h2>
+                        <h2>PVM 21 %: <t t-esc="act.vat_amount"/></h2>
+                        <h2>Bendra vertė su PVM: <t t-esc="act.total_amount_with_vat"/></h2>
                     </div>
 
                     <div class="signatures">
