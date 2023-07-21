@@ -64,9 +64,9 @@
 
                     <h2 class="centered">ATLIKTŲ DARBŲ AKTAS</h2>
 <!--                    <h3>Darbų sutartis: "<t t-esc="act.short_description"/>"</h3>-->
-<!--                    <h3>Darbų sutarties Nr.: <t t-esc="act.name"/></h3>-->
-<!--                    <h3>Užsakovas: <t t-esc="act.client.name"/></h3>-->
-<!--                    <h3>Rangovas: <t t-esc="act.subcontractor.name"/></h3>-->
+                    <h3>Darbų sutarties Nr.: <t t-esc="act.name"/></h3>
+<!--                        <h3>Užsakovas: <t t-esc="act.contract_id.name"/></h3>-->
+<!--                        <h3>Rangovas: <t t-esc="act.subcontractor_name"/></h3>-->
 
                     <!-- Update the table headers and fields to display "acts" data -->
                     <table class="bordered centered custom-width">
@@ -98,8 +98,8 @@
                                     <td><t t-esc="work.guide_id.materials"/></td>
                                     <td><t t-esc="work.guide_id.works"/></td>
                                     <td><t t-esc="work.guide_id.mechanisms"/></td>
-                                    <td><t t-esc="work.guide_id.total"/></td>
-                                    <td><t t-esc="work.guide_id.total"/></td>
+                                    <td><t t-esc="work.total_unit_price_without_vat"/></td>
+                                    <td><t t-esc="work.only_in_euro_without_vat"/></td>
                                 </tr>
                             </t>
                         </tbody>

@@ -100,8 +100,8 @@
                                         <td><t t-esc="work.guide_id.materials"/></td>
                                         <td><t t-esc="work.guide_id.works"/></td>
                                         <td><t t-esc="work.guide_id.mechanisms"/></td>
-                                        <td><t t-esc="work.guide_id.total"/></td>
-                                        <td><t t-esc="work.guide_id.total"/></td>
+                                        <td><t t-esc="work.total_unit_price_without_vat"/></td>
+                                        <td><t t-esc="work.only_in_euro_without_vat"/></td>
                                     </tr>
                                 </t>
                             </t>

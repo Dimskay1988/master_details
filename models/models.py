@@ -74,6 +74,13 @@ class Act(models.Model):
     photos = fields.Many2many('ir.attachment', string='Photos')
     employers_ids = fields.Many2many('hr.employee', string='Employees')
 
+    def generate_report_data(self):
+        act_data = self.env['contract.act'].search([...])
+        print("act_data:", act_data)
+        return {
+            'act': act_data,
+        }
+
     def action_add_work(self):
         view_id = self.env.ref('master_detail.work_guide_form_view').id
         return {
@@ -126,6 +133,26 @@ class Work(models.Model):
     get_group = fields.Selection(selection='_get_group_options', string='ALL group')
     get_group_text = fields.Char(string='Group Text', compute='_compute_get_group_text')
     parent_eil_nr = fields.Float(string='Parent Eil. Nr.', related='guide_id.eil_nr', store=True)
+    total_unit_price_without_vat = fields.Float(string='Total Unit Price Without VAT',
+                                                compute='_compute_total_unit_price')
+    only_in_euro_without_vat = fields.Float(string='Only in euro without VAT',
+                                            compute='_compute_total_in_euro')
+
+    @api.depends("total_unit_price_without_vat", "quantity")
+    def _compute_total_in_euro(self):
+        for work in self:
+            total_price = work.total_unit_price_without_vat * work.quantity
+            work.only_in_euro_without_vat = total_price if work.quantity and work.total_unit_price_without_vat else 0.0
+
+    @api.depends('guide_id', 'guide_id.materials', 'guide_id.works', 'guide_id.mechanisms')
+    def _compute_total_unit_price(self):
+        for work in self:
+            total_price = 0.0
+            if work.guide_id:
+                total_price += work.guide_id.materials
+                total_price += work.guide_id.works
+                total_price += work.guide_id.mechanisms
+            work.total_unit_price_without_vat = total_price
 
     @api.depends('get_group')
     def _compute_get_group_text(self):
@@ -168,6 +195,7 @@ class WorkGuide(models.Model):
     contract_id = fields.Many2one('contract.contract', string='Contract')
     act_id = fields.Many2one('contract.act', string='Act')
 
+
     def name_get(self):
         result = []
         all_records = self.search([])
@@ -197,4 +225,3 @@ def fields_view_get(self, view_id=None, view_type='form', toolbar=False, submenu
         result['arch'] = ET.tostring(doc, encoding='unicode')
 
     return result
-
