@@ -89,8 +89,6 @@
                                             <!--                                    <field name="get_group" widget="selection"/>-->
                                             <field name="guide_id" widget="one2many_list"/>
                                             <field name="parent_eil_nr"/>
-                                            <field name="total_unit_price_without_vat"/>
-                                            <field name="only_in_euro_without_vat"/>
                                             <!--                                            <field name="parent_eil_nr" widget="selection"/>-->
                                         </tree>
                                     </field>
