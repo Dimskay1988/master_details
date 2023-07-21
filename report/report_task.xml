@@ -60,6 +60,9 @@
                         body, table, th, td {
                             font-family: "Times New Roman", Times, serif;
                         }
+                        div.right-align {
+                            text-align: right;
+                        }
                     </style>
 
                     <h2 class="centered">ATLIKTŲ DARBŲ AKTAS</h2>
@@ -105,9 +108,11 @@
                         </tbody>
                     </table>
 
-                    <h3>Bendra vertė be PVM: <t t-esc=""/></h3>
-                    <h3>PVM 21 %: <t t-esc=""/></h3>
-                    <h3>Bendra vertė su PVM: <t t-esc=""/></h3>
+                    <div class="right-align">
+                        <h3>Bendra vertė be PVM: <t t-esc="act.total_works_cost"/></h3>
+                        <h3>PVM 21 %: <t t-esc="act.vat_amount"/></h3>
+                        <h3>Bendra vertė su PVM: <t t-esc="act.total_amount_with_vat"/></h3>
+                    </div>
 
                     <div class="signatures">
                         <div class="signatory">

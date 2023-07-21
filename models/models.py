@@ -73,13 +73,24 @@ class Act(models.Model):
     work_ids = fields.One2many('contract.work', 'act_id', string='Works')
     photos = fields.Many2many('ir.attachment', string='Photos')
     employers_ids = fields.Many2many('hr.employee', string='Employees')
+    total_works_cost = fields.Float(string='Total Works Cost', compute='_compute_total_works_cost')
+    vat_amount = fields.Float(string='VAT Amount', compute='_compute_vat_amount')
+    total_amount_with_vat = fields.Float(string='Total Amount with VAT', compute='_compute_total_amount_with_vat')
 
-    def generate_report_data(self):
-        act_data = self.env['contract.act'].search([...])
-        print("act_data:", act_data)
-        return {
-            'act': act_data,
-        }
+    @api.depends('work_ids.only_in_euro_without_vat')
+    def _compute_total_works_cost(self):
+        for act in self:
+            act.total_works_cost = sum(work.only_in_euro_without_vat for work in act.work_ids)
+
+    @api.depends('total_works_cost')
+    def _compute_vat_amount(self):
+        for act in self:
+            act.vat_amount = act.total_works_cost * 0.21
+
+    @api.depends('total_works_cost', 'vat_amount')
+    def _compute_total_amount_with_vat(self):
+        for act in self:
+            act.total_amount_with_vat = act.total_works_cost + act.vat_amount
 
     def action_add_work(self):
         view_id = self.env.ref('master_detail.work_guide_form_view').id
