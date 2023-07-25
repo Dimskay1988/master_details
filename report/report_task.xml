@@ -78,8 +78,8 @@
                         }
                         .line {
                         border-bottom: 1px solid black;
-                        width: 70px;
-                        margin: 0 auto;
+                        width: 400px;
+                        margin: left 0;
                         }
 
                     </style>
@@ -183,7 +183,7 @@
                         </tbody>
                     </table>
 
-                    <table class="info-table">
+<table class="info-table">
                         <tr>
                             <td>
                                 <div class="underline-text">Užsakovas:</div>
@@ -209,6 +209,7 @@
                             </td>
                         </tr>
                     </table>
+
                 </div>
             </t>
         </t>
