@@ -7,70 +7,124 @@
                     <style>
                         /* Center text horizontally and vertically in table cells */
                         table.bordered.centered {
-                            border-collapse: collapse;
-                        }
-                        /* New CSS class for the table columns */
-                        table.bordered.centered.custom-width th,
-                        table.bordered.centered.custom-width td {
-                            padding: 5px;
-                            text-align: center;
-                            vertical-align: middle;
+                        border-collapse: collapse;
                         }
 
-                        table.bordered.centered.custom-width th:nth-child(1),
-                        table.bordered.centered.custom-width td:nth-child(1) {
-                            width: 7.5%;
+                        /* Add different styles for each table */
+                        table.bordered.centered.custom-width1 th,
+                        table.bordered.centered.custom-width1 td {
+                        /* Custom styles for the first table */
                         }
 
-                        table.bordered.centered.custom-width th:nth-child(2),
-                        table.bordered.centered.custom-width td:nth-child(2) {
-                            width: 20%;
-                        }
-
-                        table.bordered.centered.custom-width th:nth-child(3),
-                        table.bordered.centered.custom-width td:nth-child(3) {
-                            width: 20%;
+                        table.bordered.centered.custom-width2 th,
+                        table.bordered.centered.custom-width2 td {
+                        /* Custom styles for the second table */
                         }
 
                         table.bordered.centered th,
                         table.bordered.centered td {
-                            border: 1px solid black;
-                            padding: 5px;
-                            text-align: center;
-                            vertical-align: middle;
+                        border: 1px solid black;
+                        padding: 5px;
+                        text-align: center;
+                        vertical-align: middle;
                         }
 
-                        /* Center text in headers */
                         table.bordered.centered th {
-                            font-weight: bold;
+                        font-weight: bold;
                         }
 
-                        /* Center text in the "signatures" div */
                         div.signatures {
-                            text-align: center;
+                        text-align: center;
                         }
 
                         div.signatory h4 {
-                            margin-bottom: 5px;
+                        margin-bottom: 5px;
                         }
 
-                        /* Center text in the h2 elements with class "centered" */
                         h2.centered {
-                            text-align: center;
+                        text-align: center;
                         }
+
                         body, table, th, td {
-                            font-family: "Times New Roman", Times, serif;
+                        font-family: "Times New Roman", Times, serif;
                         }
+
                         div.right-align {
-                            text-align: right;
+                        text-align: right;
                         }
+
+                        .field {
+                        margin-bottom: 20px;
+                        }
+                        table.bordered {
+                        margin-bottom: 20px; /* Adjust the value as needed */
+                        }
+
+                        table.info-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 40px;
+                        }
+
+                        table.info-table tr {
+                        padding-right: 30px;
+                        font-family: "Times New Roman", Times, serif;
+                        }
+                        table.info-table tr:last-child {
+                        padding-right: 50px;
+                        }
+                        table.info-table th {
+                        text-align: left;
+                        }
+                        .line {
+                        border-bottom: 1px solid black;
+                        width: 70px;
+                        margin: 0 auto;
+                        }
+
                     </style>
 
                     <h2 class="centered">ATLIKTŲ DARBŲ AKTAS</h2>
-<!--                    <h3>Darbų sutartis: "<t t-esc="act.short_description"/>"</h3>-->
-                    <h3>Darbų sutarties Nr.: <t t-esc="act.name"/></h3>
-<!--                        <h3>Užsakovas: <t t-esc="act.contract_id.name"/></h3>-->
-<!--                        <h3>Rangovas: <t t-esc="act.subcontractor_name"/></h3>-->
+                    <h3>Darbų sutartis: "<t t-esc="act.contract_id.name"/>"
+                    </h3>
+                    <h3>Darbų sutarties Nr.:
+                        <t t-esc="act.name"/>
+                    </h3>
+                    <h3>Užsakovas:
+                        <t t-esc="act.client_name"/>
+                    </h3>
+                    <h3>Rangovas:
+                        <t t-esc="act.subcontractor_name"/>
+                    </h3>
+
+                    <div class="container">
+                        <div class="field">
+                            <table class="bordered centered custom-width1">
+                                <!-- First table content -->
+                                <tr>
+                                    <td>Avarijos tvarkymo adresas:</td>
+                                    <td>
+                                        <t t-esc="act.address"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Užduoties Nr.:</td>
+                                    <td>
+                                        <t t-esc="act.name"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="divider"></div>
+                            <div class="right-align"></div>
+                        </div>
+
+                        <div class="field">
+                            <table>
+                                <!-- Add more rows as needed -->
+                            </table>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
 
                     <!-- Update the table headers and fields to display "acts" data -->
                     <table class="bordered centered custom-width">
@@ -94,37 +148,67 @@
                         <tbody>
                             <t t-foreach="act.work_ids" t-as="work">
                                 <tr>
-                                    <td><t t-esc="work.guide_id.eil_nr"/></td>
-                                    <td style="font-family: Arial, sans-serif;"><t t-esc="work.guide_id.diameter"/></td>
-                                    <td><t t-esc="work.guide_id.group"/></td>
-                                    <td><t t-esc="work.guide_id.unit"/></td>
-                                    <td><t t-esc="work.quantity"/></td>
-                                    <td><t t-esc="work.guide_id.materials"/></td>
-                                    <td><t t-esc="work.guide_id.works"/></td>
-                                    <td><t t-esc="work.guide_id.mechanisms"/></td>
-                                    <td><t t-esc="work.total_unit_price_without_vat"/></td>
-                                    <td><t t-esc="work.only_in_euro_without_vat"/></td>
+                                    <td>
+                                        <t t-esc="work.guide_id.eil_nr"/>
+                                    </td>
+                                    <td style="font-family: Arial, sans-serif;">
+                                        <t t-esc="work.guide_id.diameter"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.guide_id.group"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.guide_id.unit"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.quantity"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.guide_id.materials"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.guide_id.works"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.guide_id.mechanisms"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.total_unit_price_without_vat"/>
+                                    </td>
+                                    <td>
+                                        <t t-esc="work.only_in_euro_without_vat"/>
+                                    </td>
                                 </tr>
                             </t>
                         </tbody>
                     </table>
 
-                    <div class="right-align">
-                        <h2>Bendra vertė be PVM: <t t-esc="act.total_works_cost"/></h2>
-                        <h2>PVM 21 %: <t t-esc="act.vat_amount"/></h2>
-                        <h2>Bendra vertė su PVM: <t t-esc="act.total_amount_with_vat"/></h2>
-                    </div>
-
-                    <div class="signatures">
-                        <div class="signatory">
-                            <h4>Užsakovas:</h4>
-<!--                            <p><t t-esc="contract.client.name"/></p>-->
-                        </div>
-                        <div class="signatory">
-                            <h4>Rangovas:</h4>
-<!--                            <p><t t-esc="contract.subcontractor.name"/></p>-->
-                        </div>
-                    </div>
+                    <table class="info-table">
+                        <tr>
+                            <td>
+                                <div class="underline-text">Užsakovas:</div>
+                                <div t-esc="act.client_name"></div>
+                                <div class="line"></div>
+                            </td>
+                            <td>
+                                <div class="underline-text">Užsakovas:</div>
+                                <div t-esc="act.client_name"></div>
+                                <div class="line"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="underline-text">Užsakovas:</div>
+                                <div t-esc="act.client_name"></div>
+                                <div class="line"></div>
+                            </td>
+                            <td>
+                                <div class="underline-text">Rangovas:</div>
+                                <div t-esc="act.subcontractor_name"></div>
+                                <div class="line"></div>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </t>
         </t>

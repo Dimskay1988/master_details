@@ -76,7 +76,18 @@ class Act(models.Model):
     total_works_cost = fields.Float(string='Total Works Cost', compute='_compute_total_works_cost')
     vat_amount = fields.Float(string='VAT Amount', compute='_compute_vat_amount')
     total_amount_with_vat = fields.Float(string='Total Amount with VAT', compute='_compute_total_amount_with_vat')
+    subcontractor_name = fields.Char(string='Subcontractor Name', compute='_compute_subcontractor_name', store=True)
+    client_name = fields.Char(string='Client Name', compute='_compute_client_name', store=True)
 
+    @api.depends('contract_id.subcontractor', 'contract_id.subcontractor.name')
+    def _compute_subcontractor_name(self):
+        for act in self:
+            act.subcontractor_name = act.contract_id.subcontractor.name if act.contract_id.subcontractor else ''
+
+    @api.depends('contract_id.client', 'contract_id.client.name')
+    def _compute_client_name(self):
+        for act in self:
+            act.client_name = act.contract_id.client.name if act.contract_id.client else ''
     @api.depends('work_ids.only_in_euro_without_vat')
     def _compute_total_works_cost(self):
         for act in self:
